@@ -20,10 +20,9 @@ else
         segsize=$2
 fi
 
-declare -i listsize='cat "${listall}" | wc -l'
+declare -i listsize=`cat "${listall}" | wc -l`
 declare -i segcount=$(( listsize /segsize ))
 declare -i segremain=$(( listsize % segsize ))
-
 prefix=${listall%\.*}
 postfix=${listall#*\.}
 echo '$listall='$listall
@@ -44,7 +43,7 @@ if [ $segcount -gt 0 ]; then
                 num_end=$(( i * segsize ))
                 num_begin=$(( num_end - segsize + 1))    
                 echo ${num_begin} ${num_end} "${prefix}_${i}-${listsize}-${segsize}_${num_begin}-${num_end}.$postfix"
-                echo "${prefix}_${i}-${listsize}-${segsize}_${num_begin}-${num_end}.$postfix" >> "${1og}"
+                echo "${prefix}_${i}-${listsize}-${segsize}_${num_begin}-${num_end}.$postfix" >> "${log}"
                 head -n ${num_end} "${listall}" | tail -n ${segsize} > "${prefix}_${i}-${listsize}-${segsize}_${num_begin}-${num_end}.$postfix"
         done
 fi
@@ -53,7 +52,7 @@ if [ $segremain -gt 0 ]; then
         i=$(( i + 1 ))
         num_end=$listsize
         num_begin=$(( num_end - segremain + 1 ))
-        echo ${num _begin} ${num_end} "${prefix}_${i}-${listsize}-${segsize}_${num_begin}-${num_end}.$postfix"
-        echo "${prefix}_${i}-${listsize}-${segsize}_${num_begin}-${num_end}.$postfix" >> "${1og}"
+        echo ${num_begin} ${num_end} "${prefix}_${i}-${listsize}-${segsize}_${num_begin}-${num_end}.$postfix"
+        echo "${prefix}_${i}-${listsize}-${segsize}_${num_begin}-${num_end}.$postfix" >> "${log}"
         head -n ${num_end}  "${listall}"  | tail -n ${segremain} > "${prefix}_${i}-${listsize}-${segsize}_${num_begin}-${num_end}.$postfix" 
 fi
